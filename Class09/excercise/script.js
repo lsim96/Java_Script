@@ -9,82 +9,75 @@ function formContainer(formType) {
 }
 
 let addButton = document.getElementById("addBtn");
-
 let logInBtn = document.getElementById("logInBtn");
-let logInUsername = document.getElementById("username1");
-let logInPassword = document.getElementById("pass1");
 
 let testObject = [];
 
 addButton.addEventListener("click", function () {
+  const username = document.getElementById("username").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("pass").value;
+  const age = document.getElementById("age1").value;
+
   let isValid = true;
 
   //username validation
-  const username = document.getElementById("username").value;
+
   if (username.length > 25) {
-    alert("Username is too long");
+    document.getElementById("usernameMessage").textContent =
+      "Username shouldn't be longer than 25 characters";
+    document.getElementById("usernameMessage").removeAttribute("hidden");
+
     isValid = false;
-  } else {
-    testObject.push({
-      username: username,
-    });
   }
+
   //email validation
-  const email = document.getElementById("email").value;
+
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   if (!emailPattern.test(email)) {
-    alert("Not an email");
+    document.getElementById("emailMessage").textContent =
+      "Please enter a valid email";
+    document.getElementById("emailMessage").removeAttribute("hidden");
+
     isValid = false;
-  } else {
-    testObject.push({
-      email: email,
-    });
   }
+
   //password validation
-  const password = document.getElementById("pass").value;
+
   if (password.length < 8) {
-    alert("Password is not long enough");
+    document.getElementById("passwordMessage").textContent =
+      "Password should be at least 8 characters long";
+    document.getElementById("passwordMessage").removeAttribute("hidden");
+
     isValid = false;
-  } else {
-    testObject.push({
-      password: password,
-    });
   }
+
   //age validation
-  const age = document.getElementById("age1").value;
+
   if (age < 18) {
-    alert("Not old enough!");
+    document.getElementById("ageMessage").textContent =
+      "User should be older than 18";
+    document.getElementById("ageMessage").removeAttribute("hidden");
+
     isValid = false;
-  } else {
-    testObject.push({
-      age: age,
-    });
   }
-  // testObject.push({
-  //   username: username.value,
-  //   email: email.value,
-  //   password: password.value,
-  //   age: age.value,
-  // });
-  isValid = true;
-  formContainer("login");
-  console.log(testObject);
+
+  if (isValid) {
+    testObject.push({ username, email, password, age });
+    alert("Registration successful!");
+    formContainer("login");
+  }
 });
 
-function logIn(username, password) {
-  for (let user of testObject) {
-    if (user.username === username) {
-      if (user.password === password) {
-        alert("Succsessful login");
-      } else {
-        alert("Wrong password");
-      }
-    } else {
-      alert("Wrong username");
-    }
-  }
-}
-
 logInBtn.addEventListener("click", function () {
-  logIn(logInUsername.value, logInPassword.value);
+  const logInUsername = document.getElementById("username1").value;
+  const logInPassword = document.getElementById("pass1").value;
+  const user = testObject.find(function (user) {
+    return user.username === logInUsername && user.password === logInPassword;
+  });
+  if (user) {
+    alert("Login succeed");
+  } else {
+    alert("Login failed");
+  }
 });
